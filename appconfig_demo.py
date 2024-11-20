@@ -229,7 +229,7 @@ if __name__ == "__main__":
     webServer = HTTPServer((hostname, WEBSERVER_PORT), SimpleCheckoutPageWebServer)
     url = f"http://{hostname}:{WEBSERVER_PORT}"
     print(f"Local webserver started. To view, navigate your browser to: {url}")
-    webbrowser.open(url, new=2)
+    # webbrowser.open(url, new=2)
     try:
         webServer.serve_forever()
     except KeyboardInterrupt:
