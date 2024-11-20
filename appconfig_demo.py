@@ -225,7 +225,7 @@ class SimpleCheckoutPageWebServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes(get_html(), "utf-8"))
 
 if __name__ == "__main__":
-    hostname = "localhost"
+    hostname = "0.0.0.0"
     webServer = HTTPServer((hostname, WEBSERVER_PORT), SimpleCheckoutPageWebServer)
     url = f"http://{hostname}:{WEBSERVER_PORT}"
     print(f"Local webserver started. To view, navigate your browser to: {url}")
