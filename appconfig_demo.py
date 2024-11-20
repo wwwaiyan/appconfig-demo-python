@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-WEBSERVER_PORT = 80
+WEBSERVER_PORT = 8080
 APPCONFIG_APPLICATION_NAME = os.getenv("APPCONFIG_APPLICATION_NAME", "default_app")
 APPCONFIG_CONFIG_PROFILE_NAME = os.getenv("APPCONFIG_CONFIG_PROFILE_NAME", "default_profile")
 APPCONFIG_ENVIRONMENT_NAME = os.getenv("APPCONFIG_ENVIRONMENT_NAME", "default_env")
