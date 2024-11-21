@@ -58,23 +58,23 @@ def get_config():
 def get_html():
     # For simplicity this code fetches a fresh config from AppConfig every time a page is served.
     config = get_config()
-    allow_bitcoin_flag = config["allow-bitcoin-at-checkout"]
+    allow_mmk_flag = config["allow-mmk-at-checkout"]
 
-    if allow_bitcoin_flag["enabled"]:
+    if allow_mmk_flag["enabled"]:
         dropdown_display_css = "initial"
-        default_currency = allow_bitcoin_flag["default-currency"]
-        bitcoinDiscountPercentage = allow_bitcoin_flag.get("bitcoin-discount-percent", 0)
-        bitcoinDiscountEndDate = allow_bitcoin_flag.get("bitcoin-discount-end-date", "")
+        default_currency = allow_mmk_flag["default-currency"]
+        mmkDiscountPercentage = allow_mmk_flag.get("mmk-discount-percent", 0)
+        mmkDiscountEndDate = allow_mmk_flag.get("mmk-discount-end-date", "")
     else:
         default_currency = "USD"
         dropdown_display_css = "none"
-        bitcoinDiscountPercentage = 0
-        bitcoinDiscountEndDate = ""
+        mmkDiscountPercentage = 0
+        mmkDiscountEndDate = ""
 
-    if bitcoinDiscountEndDate:
-        discountEndDatetime = datetime.strptime(bitcoinDiscountEndDate, "%d/%m/%Y")
+    if mmkDiscountEndDate:
+        discountEndDatetime = datetime.strptime(mmkDiscountEndDate, "%d/%m/%Y")
         if datetime.today() > discountEndDatetime:
-            bitcoinDiscountPercentage = 0
+            mmkDiscountPercentage = 0
 
     usd_selected = "selected='selected'" if default_currency == "USD" else ""
     mmk_selected = "selected='selected'" if default_currency == "MMK" else ""
@@ -165,8 +165,8 @@ def get_html():
             <hr>
             <p id="mmk-discount">
                 <i>
-                    <small>November discount, order using MMK by $bitcoinDiscountEndDate</small>
-                    <span class="right">$bitcoinDiscountPercentage%</span>
+                    <small>November discount, order using MMK by $mmkDiscountEndDate</small>
+                    <span class="right">$mmkDiscountPercentage%</span>
                 </i>
             </p>
             <b>Total:</b>
@@ -193,10 +193,10 @@ def get_html():
             currencySymbol="MMK";
             price = 150000;  
         }
-        discount=$bitcoinDiscountPercentage;
+        discount=$mmkDiscountPercentage;
         if (discount && currency === "MMK") {
             total = price - (price*discount/100);
-            total = total.toFixed(6);
+            total = total.toFixed(0);
             document.getElementById("mmk-discount").style.display = 'inherit';
         } else {
             total = price;
@@ -212,8 +212,8 @@ def get_html():
         dropdownDisplayCSS=dropdown_display_css,
         usdSelected=usd_selected,
         mmkSelected=mmk_selected,
-        bitcoinDiscountPercentage=bitcoinDiscountPercentage,
-        bitcoinDiscountEndDate=bitcoinDiscountEndDate,
+        mmkDiscountPercentage=mmkDiscountPercentage,
+        mmkDiscountEndDate=mmkDiscountEndDate,
     )
     return html
 
