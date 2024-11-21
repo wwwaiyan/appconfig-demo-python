@@ -4,4 +4,4 @@ COPY . /app
 RUN pip install --no-cache-dir boto3 python-dotenv
 COPY .env /app/.env
 EXPOSE 80
-CMD ["python", "app.py"]
+CMD ["python", "appconfig_demo.py"]

@@ -58,26 +58,26 @@ def get_config():
 def get_html():
     # For simplicity this code fetches a fresh config from AppConfig every time a page is served.
     config = get_config()
-    allow_bitcoin_flag = config["allow-bitcoin-at-checkout"]
+    allow_mmk_flag = config["allow-mmk-at-checkout"]
 
-    if allow_bitcoin_flag["enabled"]:
+    if allow_mmk_flag["enabled"]:
         dropdown_display_css = "initial"
-        default_currency = allow_bitcoin_flag["default-currency"]
-        bitcoinDiscountPercentage = allow_bitcoin_flag.get("bitcoin-discount-percent", 0)
-        bitcoinDiscountEndDate = allow_bitcoin_flag.get("bitcoin-discount-end-date", "")
+        default_currency = allow_mmk_flag["default-currency"]
+        mmkDiscountPercentage = allow_mmk_flag.get("mmk-discount-percent", 0)
+        mmkDiscountEndDate = allow_mmk_flag.get("mmk-discount-end-date", "")
     else:
         default_currency = "USD"
         dropdown_display_css = "none"
-        bitcoinDiscountPercentage = 0
-        bitcoinDiscountEndDate = ""
+        mmkDiscountPercentage = 0
+        mmkDiscountEndDate = ""
 
-    if bitcoinDiscountEndDate:
-        discountEndDatetime = datetime.strptime(bitcoinDiscountEndDate, "%d/%m/%Y")
+    if mmkDiscountEndDate:
+        discountEndDatetime = datetime.strptime(mmkDiscountEndDate, "%d/%m/%Y")
         if datetime.today() > discountEndDatetime:
-            bitcoinDiscountPercentage = 0
+            mmkDiscountPercentage = 0
 
     usd_selected = "selected='selected'" if default_currency == "USD" else ""
-    btc_selected = "selected='selected'" if default_currency == "BTC" else ""
+    mmk_selected = "selected='selected'" if default_currency == "MMK" else ""
 
     html_template = """
 <html>
@@ -163,17 +163,17 @@ def get_html():
             <h4>Shopping Cart Example</h4>
             Premium Product A <span class="right price"></span>
             <hr>
-            <p id="btc-discount">
+            <p id="mmk-discount">
                 <i>
-                    <small>November discount, order using BTC by $bitcoinDiscountEndDate</small>
-                    <span class="right">$bitcoinDiscountPercentage%</span>
+                    <small>November discount, order using MMK by $mmkDiscountEndDate</small>
+                    <span class="right">$mmkDiscountPercentage%</span>
                 </i>
             </p>
             <b>Total:</b>
             <span class="right">
                 <select name="currency" id="currency" onchange="dropdownChanged()" autocomplete="off">
                     <option value="USD" $usdSelected>USD</option>
-                    <option value="BTC" $btcSelected>BTC</option>
+                    <option value="MMK" $mmkSelected>MMK</option>
                 </select>
                 <span class="total"></span>
             </span>
@@ -188,19 +188,19 @@ def get_html():
         }
         if (currency === "USD") {
             currencySymbol="$$";
-            price = 450; 
+            price = 50; 
         } else {
-            currencySymbol="₿";
-            price = 0.000026;  
+            currencySymbol="MMK";
+            price = 150000;  
         }
-        discount=$bitcoinDiscountPercentage;
-        if (discount && currency === "BTC") {
+        discount=$mmkDiscountPercentage;
+        if (discount && currency === "MMK") {
             total = price - (price*discount/100);
-            total = total.toFixed(6);
-            document.getElementById("btc-discount").style.display = 'inherit';
+            total = total.toFixed(0);
+            document.getElementById("mmk-discount").style.display = 'inherit';
         } else {
             total = price;
-            document.getElementById("btc-discount").style.display = 'none';
+            document.getElementById("mmk-discount").style.display = 'none';
         }
         document.querySelectorAll(".price").forEach(txt => { txt.textContent = currencySymbol+price; })
         document.querySelectorAll(".total").forEach(txt => { txt.textContent = currencySymbol+total; })
@@ -211,9 +211,9 @@ def get_html():
     html = Template(html_template).substitute(
         dropdownDisplayCSS=dropdown_display_css,
         usdSelected=usd_selected,
-        btcSelected=btc_selected,
-        bitcoinDiscountPercentage=bitcoinDiscountPercentage,
-        bitcoinDiscountEndDate=bitcoinDiscountEndDate,
+        mmkSelected=mmk_selected,
+        mmkDiscountPercentage=mmkDiscountPercentage,
+        mmkDiscountEndDate=mmkDiscountEndDate,
     )
     return html
 
@@ -225,11 +225,11 @@ class SimpleCheckoutPageWebServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes(get_html(), "utf-8"))
 
 if __name__ == "__main__":
-    hostname = "localhost"
+    hostname = "0.0.0.0"
     webServer = HTTPServer((hostname, WEBSERVER_PORT), SimpleCheckoutPageWebServer)
     url = f"http://{hostname}:{WEBSERVER_PORT}"
     print(f"Local webserver started. To view, navigate your browser to: {url}")
-    webbrowser.open(url, new=2)
+    # webbrowser.open(url, new=2)
     try:
         webServer.serve_forever()
     except KeyboardInterrupt:

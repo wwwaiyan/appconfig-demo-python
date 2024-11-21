@@ -1,0 +1,32 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "__TASK_DEFINITION__"
+        LoadBalancerInfo:
+          ContainerName: "__CONTAINER_NAME__"
+          ContainerPort: __CONTAINER_PORT__
+
+      #   PlatformVersion: "LATEST"
+      #   NetworkConfiguration:
+      #     AwsvpcConfiguration:
+      #       Subnets:
+      #         - "subnet-0123456789abcdef0"
+      #         - "subnet-0123456789abcdef1"
+      #       SecurityGroups:
+      #         - "sg-0123456789abcdef0"
+      #       AssignPublicIp: "ENABLED"
+      # Hook:
+      #   AfterAllowTestTraffic: 
+      #     - location: scripts/AfterAllowTestTraffic.sh
+      #       timeout: 300
+      #       runas: root
+      #   BeforeAllowTraffic:
+      #     - location: scripts/BeforeAllowTraffic.sh
+      #       timeout: 300
+      #       runas: root
+      #   AfterAllowTraffic:
+      #     - location: scripts/AfterAllowTraffic.sh
+      #       timeout: 300
+      #       runas: root
