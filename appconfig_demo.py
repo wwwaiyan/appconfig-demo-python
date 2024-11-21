@@ -77,7 +77,7 @@ def get_html():
             bitcoinDiscountPercentage = 0
 
     usd_selected = "selected='selected'" if default_currency == "USD" else ""
-    btc_selected = "selected='selected'" if default_currency == "BTC" else ""
+    mmk_selected = "selected='selected'" if default_currency == "MMK" else ""
 
     html_template = """
 <html>
@@ -163,9 +163,9 @@ def get_html():
             <h4>Shopping Cart Example</h4>
             Premium Product A <span class="right price"></span>
             <hr>
-            <p id="btc-discount">
+            <p id="mmk-discount">
                 <i>
-                    <small>November discount, order using BTC by $bitcoinDiscountEndDate</small>
+                    <small>November discount, order using MMK by $bitcoinDiscountEndDate</small>
                     <span class="right">$bitcoinDiscountPercentage%</span>
                 </i>
             </p>
@@ -173,7 +173,7 @@ def get_html():
             <span class="right">
                 <select name="currency" id="currency" onchange="dropdownChanged()" autocomplete="off">
                     <option value="USD" $usdSelected>USD</option>
-                    <option value="BTC" $btcSelected>BTC</option>
+                    <option value="MMK" $mmkSelected>MMK</option>
                 </select>
                 <span class="total"></span>
             </span>
@@ -188,19 +188,19 @@ def get_html():
         }
         if (currency === "USD") {
             currencySymbol="$$";
-            price = 450; 
+            price = 50; 
         } else {
-            currencySymbol="₿";
-            price = 0.000026;  
+            currencySymbol="MMK";
+            price = 150000;  
         }
         discount=$bitcoinDiscountPercentage;
-        if (discount && currency === "BTC") {
+        if (discount && currency === "MMK") {
             total = price - (price*discount/100);
             total = total.toFixed(6);
-            document.getElementById("btc-discount").style.display = 'inherit';
+            document.getElementById("mmk-discount").style.display = 'inherit';
         } else {
             total = price;
-            document.getElementById("btc-discount").style.display = 'none';
+            document.getElementById("mmk-discount").style.display = 'none';
         }
         document.querySelectorAll(".price").forEach(txt => { txt.textContent = currencySymbol+price; })
         document.querySelectorAll(".total").forEach(txt => { txt.textContent = currencySymbol+total; })
@@ -211,7 +211,7 @@ def get_html():
     html = Template(html_template).substitute(
         dropdownDisplayCSS=dropdown_display_css,
         usdSelected=usd_selected,
-        btcSelected=btc_selected,
+        mmkSelected=mmk_selected,
         bitcoinDiscountPercentage=bitcoinDiscountPercentage,
         bitcoinDiscountEndDate=bitcoinDiscountEndDate,
     )
