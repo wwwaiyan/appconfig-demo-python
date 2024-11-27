@@ -1,0 +1,7 @@
+Features:
+  - Name: BetaFeature
+    Description: Enables beta feature
+    Enabled: false
+  - Name: MaintenanceMode
+    Description: Toggles maintenance mode
+    Enabled: false
